@@ -16,8 +16,6 @@ namespace PingPongServer
         private readonly TcpListener _listener;
         private List<TcpClient> _connectedSockets;
 
-        private byte[] _buffer;
-
         public Server(int port)
         {
             _listener = new TcpListener(IPAddress.Any, port);
