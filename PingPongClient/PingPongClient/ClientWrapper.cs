@@ -10,9 +10,9 @@ namespace PingPongClient
         private readonly IClient _client;
         private readonly IInput _input;
         private readonly IOutput _output;
-        private readonly IConverter _converter;
+        private readonly IByteConverter _converter;
 
-        public ClientWrapper(IClient client, IInput input, IOutput output, IConverter converter)
+        public ClientWrapper(IClient client, IInput input, IOutput output, IByteConverter converter)
         {
             _client = client;
             _input = input;

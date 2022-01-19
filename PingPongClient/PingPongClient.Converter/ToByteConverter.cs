@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PingPongClient.Converter
 {
-    public class ToByteConverter : IConverter
+    public class ToByteConverter : IByteConverter
     {
         public byte[] Convert(string value)
         {
