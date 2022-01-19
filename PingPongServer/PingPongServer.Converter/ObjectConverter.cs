@@ -2,11 +2,17 @@
 using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
 
 namespace PingPongServer.Converter
 {
     public class ObjectConverter : IConvert
     {
+        public string ByteToString(byte[] bytes)
+        {
+            return Encoding.UTF8.GetString(bytes);
+        }
+
         public byte[] ToBytes(object obj)
         {
             if (obj == null)

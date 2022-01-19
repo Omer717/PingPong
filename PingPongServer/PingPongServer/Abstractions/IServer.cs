@@ -5,8 +5,8 @@ namespace PingPongServer.Abstractions
     public interface IServer
     {
         void Start();
-        void SendMessage(TcpClient socket, string message);
-        string RecvMessage(TcpClient socket);
+        void SendData(TcpClient socket, byte[] data);
+        byte[] RecvData(TcpClient socket);
         void WaitForNewClients();
         void CreateClientThread(TcpClient socket);
     }

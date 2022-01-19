@@ -1,0 +1,16 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "c7844bde-51b1-474f-8755-46cc6b92b2b4": {
+      "ProjectGuid": "c7844bde-51b1-474f-8755-46cc6b92b2b4",
+      "DisplayName": "PingPongServer",
+      "ColorIndex": 0
+    },
+    "ff59ee7d-8331-4c54-845e-69d7a10c82e2": {
+      "ProjectGuid": "ff59ee7d-8331-4c54-845e-69d7a10c82e2",
+      "DisplayName": "PingPongServer.Converter",
+      "ColorIndex": 1
+    }
+  },
+  "NextColorIndex": 2
+}

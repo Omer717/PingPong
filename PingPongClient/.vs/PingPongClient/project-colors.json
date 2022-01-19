@@ -20,7 +20,12 @@
       "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
       "DisplayName": "Miscellaneous Files",
       "ColorIndex": -1
+    },
+    "dd931f81-31b8-4ba8-88e5-2655dd92df29": {
+      "ProjectGuid": "dd931f81-31b8-4ba8-88e5-2655dd92df29",
+      "DisplayName": "PingPongClient.Converter",
+      "ColorIndex": 3
     }
   },
-  "NextColorIndex": 3
+  "NextColorIndex": 4
 }

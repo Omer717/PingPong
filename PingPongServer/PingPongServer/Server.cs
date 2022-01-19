@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -34,8 +35,8 @@ namespace PingPongServer
                 {
                     try
                     {
-                        var recivedData = RecvMessage(client);
-                        SendMessage(client, recivedData);
+                        var recivedData = RecvData(client);
+                        SendData(client, recivedData);
                     }
                     catch (Exception)
                     {
@@ -48,7 +49,7 @@ namespace PingPongServer
             socketThread.Start();
         }
 
-        public string RecvMessage(TcpClient client)
+        public byte[] RecvData(TcpClient client)
         {
             var stream = client.GetStream();
             byte[] buffer = new byte[BUFFER_SIZE];
@@ -61,16 +62,15 @@ namespace PingPongServer
                     recv++;
                 }
             }
-            var data = Encoding.UTF8.GetString(buffer, 0, recv);
-            return data;
+            //-1 to remove \n
+            Console.WriteLine(_converter.ByteToString(buffer.Take(recv).ToArray()));
+            return buffer.Take(recv).ToArray();
         }
 
-        public void SendMessage(TcpClient client, string message)
+        public void SendData(TcpClient client, byte[] data)
         {
             var stream = client.GetStream();
-            var writer = new StreamWriter(stream);
-            writer.WriteLine(message);
-            writer.Flush();
+            stream.Write(data, 0, Buffer.ByteLength(data));
         }
 
         public void Start()
