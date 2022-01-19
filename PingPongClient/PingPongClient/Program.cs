@@ -1,4 +1,5 @@
 ﻿using PingPongClient.UI;
+using PingPongClient.Converter;
 
 namespace PingPongClient
 {
@@ -6,11 +7,13 @@ namespace PingPongClient
     {
         static void Main(string[] args)
         {
-            var clientLogic = new Client(args[0], int.Parse(args[1]));
+            //var clientLogic = new Client(args[0], int.Parse(args[1]));
+            var clientLogic = new Client("127.0.0.1", 1337);
             var input = new ConsoleInput();
             var output = new ConsoleOutput();
+            var converter = new ToByteConverter();
 
-            var client = new ClientWrapper(clientLogic, input, output);
+            var client = new ClientWrapper(clientLogic, input, output, converter);
             client.RunPingPongClient();
         }
     }

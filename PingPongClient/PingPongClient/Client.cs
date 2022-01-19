@@ -1,7 +1,6 @@
 ﻿using PingPongClient.Abstractions;
 using System.IO;
 using System.Net.Sockets;
-using System.Text;
 
 namespace PingPongClient
 {
@@ -16,17 +15,15 @@ namespace PingPongClient
             _stream = _client.GetStream();
         }
 
-        public string RecieveMessage()
+        public string RecieveBytes()
         {
             var reader = new StreamReader(_stream);
             return reader.ReadLine();
         }
 
-        public void SendMessage(string message)
+        public void SendBytes(byte[] data, int byteCount)
         {
-            int byteCount = Encoding.ASCII.GetByteCount(message);
-            var buffer = Encoding.ASCII.GetBytes(message);
-            _stream.Write(buffer, 0, byteCount);
+            _stream.Write(data, 0, byteCount);
         }
     }
 }

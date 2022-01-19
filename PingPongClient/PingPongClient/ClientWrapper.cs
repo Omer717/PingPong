@@ -1,5 +1,7 @@
 ﻿using PingPongClient.Abstractions;
+using PingPongClient.Converter.Abstractions;
 using PingPongClient.UI.Abstractions;
+using System.Text;
 
 namespace PingPongClient
 {
@@ -8,12 +10,14 @@ namespace PingPongClient
         private readonly IClient _client;
         private readonly IInput _input;
         private readonly IOutput _output;
+        private readonly IConverter _converter;
 
-        public ClientWrapper(IClient client, IInput input, IOutput output)
+        public ClientWrapper(IClient client, IInput input, IOutput output, IConverter converter)
         {
             _client = client;
             _input = input;
             _output = output;
+            _converter = converter;
         }
 
         public void RunPingPongClient()
@@ -21,8 +25,10 @@ namespace PingPongClient
             while (true)
             {
                 var userInput = _input.GetInput();
-                _client.SendMessage(userInput);
-                var receivedData = _client.RecieveMessage();
+                var byteCount = Encoding.ASCII.GetByteCount(userInput);
+                var bytes = _converter.Convert(userInput);
+                _client.SendBytes(bytes, byteCount);
+                var receivedData = _client.RecieveBytes();
                 _output.Write(receivedData);
             }
         }

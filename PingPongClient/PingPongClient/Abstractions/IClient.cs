@@ -2,7 +2,7 @@
 {
     public interface IClient
     {
-        void SendMessage(string message);
-        string RecieveMessage();
+        void SendBytes(byte[] data, int byteCount);
+        string RecieveBytes();
     }
 }
