@@ -6,7 +6,8 @@ namespace PingPongClient
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var client = new Client(args[0], int.Parse(args[1]));
+            client.Start();
         }
     }
 }
