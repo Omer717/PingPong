@@ -51,9 +51,9 @@ namespace PingPongServer
                     }
                 }
                 userData += Encoding.ASCII.GetString(_buffer, 0, bytesRec);
-
-
                 Console.WriteLine(userData);
+
+                SendMessage(newSocket, userData);
             }
         }
     }

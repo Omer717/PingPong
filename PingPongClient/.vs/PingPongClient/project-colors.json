@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "3822bfb6-f84f-48ac-a0cd-a3c24c336ea2": {
+      "ProjectGuid": "3822bfb6-f84f-48ac-a0cd-a3c24c336ea2",
+      "DisplayName": "PingPongClient",
+      "ColorIndex": 0
+    }
+  },
+  "NextColorIndex": 1
+}
