@@ -11,13 +11,15 @@ namespace PingPongClient
         private readonly IInput _input;
         private readonly IOutput _output;
         private readonly IByteConverter _converter;
+        private readonly IFromByteConverter _fromConverter;
 
-        public ClientWrapper(IClient client, IInput input, IOutput output, IByteConverter converter)
+        public ClientWrapper(IClient client, IInput input, IOutput output, IByteConverter converter, IFromByteConverter fromConverter)
         {
             _client = client;
             _input = input;
             _output = output;
             _converter = converter;
+            _fromConverter = fromConverter;
         }
 
         public void RunPingPongClient()
@@ -29,7 +31,8 @@ namespace PingPongClient
                 var bytes = _converter.Convert(userInput);
                 _client.SendBytes(bytes, byteCount);
                 var receivedData = _client.RecieveBytes();
-                _output.Write(receivedData);
+                var parsedData = _fromConverter.StringFromBytes(receivedData);
+                _output.Write(parsedData);
             }
         }
     }

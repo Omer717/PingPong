@@ -1,4 +1,5 @@
 ﻿using PingPongClient.Converter.Abstractions;
+using System.Text;
 
 namespace PingPongClient.Converter
 {
@@ -11,7 +12,7 @@ namespace PingPongClient.Converter
 
         public string StringFromBytes(byte[] bytes)
         {
-            throw new System.NotImplementedException();
+            return Encoding.UTF8.GetString(bytes);
         }
     }
 }

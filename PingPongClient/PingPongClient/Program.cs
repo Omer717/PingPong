@@ -12,8 +12,9 @@ namespace PingPongClient
             var input = new ConsoleInput();
             var output = new ConsoleOutput();
             var converter = new ToByteConverter();
+            var fromConverter = new FromByteConverter();
 
-            var client = new ClientWrapper(clientLogic, input, output, converter);
+            var client = new ClientWrapper(clientLogic, input, output, converter, fromConverter);
             client.RunPingPongClient();
         }
     }

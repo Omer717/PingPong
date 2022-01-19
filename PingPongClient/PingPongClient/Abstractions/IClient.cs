@@ -3,6 +3,6 @@
     public interface IClient
     {
         void SendBytes(byte[] data, int byteCount);
-        string RecieveBytes();
+        byte[] RecieveBytes();
     }
 }

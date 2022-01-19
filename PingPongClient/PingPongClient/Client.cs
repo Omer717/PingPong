@@ -1,11 +1,14 @@
 ﻿using PingPongClient.Abstractions;
 using System.IO;
+using System.Linq;
 using System.Net.Sockets;
 
 namespace PingPongClient
 {
     public class Client : IClient
     {
+        private const int BUFFER_SIZE = 1024;
+
         private readonly TcpClient _client;
         private readonly NetworkStream _stream;
 
@@ -15,10 +18,20 @@ namespace PingPongClient
             _stream = _client.GetStream();
         }
 
-        public string RecieveBytes()
+        public byte[] RecieveBytes()
         {
-            var reader = new StreamReader(_stream);
-            return reader.ReadLine();
+            byte[] buffer = new byte[BUFFER_SIZE];
+            _stream.Read(buffer, 0, buffer.Length);
+            int recv = 0;
+            foreach (var b in buffer)
+            {
+                if (b != 0)
+                {
+                    recv++;
+                }
+            }
+            var data = buffer.Take(recv).ToArray();
+            return data;
         }
 
         public void SendBytes(byte[] data, int byteCount)
