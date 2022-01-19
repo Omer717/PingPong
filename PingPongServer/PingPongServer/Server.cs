@@ -25,6 +25,12 @@ namespace PingPongServer
             _socket = new Socket(_address.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
         }
 
+        public void SendMessage(Socket socket, string message)
+        {
+            var messageBytes = Encoding.UTF8.GetBytes(message);
+            socket.Send(messageBytes);
+        }
+
         public void Start()
         {
             _socket.Bind(_endPoint);
