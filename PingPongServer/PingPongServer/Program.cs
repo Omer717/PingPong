@@ -1,11 +1,14 @@
-﻿namespace PingPongServer
+﻿using PingPongServer.Converter;
+
+
+namespace PingPongServer
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            //var server = new Server(int.Parse(args[0]));
-            var server = new Server(1337);
+            var converter = new ObjectConverter();
+            var server = new Server(converter, int.Parse(args[0]));
             server.Start();
         }
     }

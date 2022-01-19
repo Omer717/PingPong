@@ -5,7 +5,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace PingPongServer.Converter
 {
-    public class ByteConverter : IConvert
+    public class ObjectConverter : IConvert
     {
         public byte[] ToBytes(object obj)
         {
