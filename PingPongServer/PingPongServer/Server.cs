@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using PingPongServer.Abstractions;
+using PingPongServer.Converter.Abstractions;
 
 namespace PingPongServer
 {
@@ -14,12 +15,14 @@ namespace PingPongServer
         private const int BUFFER_SIZE = 1024;
 
         private readonly TcpListener _listener;
+        private readonly IConvert _converter;
         private List<TcpClient> _connectedSockets;
 
-        public Server(int port)
+        public Server(IConvert converter, int port)
         {
             _listener = new TcpListener(IPAddress.Any, port);
-            _connectedSockets = new List<TcpClient>();  
+            _connectedSockets = new List<TcpClient>();
+            _converter = converter;
         }
 
         public void CreateClientThread(TcpClient client)
