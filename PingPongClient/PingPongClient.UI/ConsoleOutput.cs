@@ -1,7 +1,7 @@
-﻿using PingPongClient.Abstractions;
+﻿using PingPongClient.UI.Abstractions;
 using System;
 
-namespace PingPongClient
+namespace PingPongClient.UI
 {
     public class ConsoleOutput : IOutput
     {

@@ -1,4 +1,4 @@
-﻿namespace PingPongClient.Abstractions
+﻿namespace PingPongClient.UI.Abstractions
 {
     public interface IOutput
     {
