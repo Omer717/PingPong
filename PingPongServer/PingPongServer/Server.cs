@@ -8,7 +8,8 @@ namespace PingPongServer
 {
     public class Server : IServer
     {
-        private readonly IPHostEntry _entry;
+        private const int BUFFER_SIZE = 1024;
+
         private readonly IPAddress _address;
         private readonly IPEndPoint _endPoint;
         private readonly Socket _socket;
@@ -17,9 +18,8 @@ namespace PingPongServer
 
         public Server(int port)
         {
-            _buffer = new byte[1024];
+            _buffer = new byte[BUFFER_SIZE];
 
-            _entry = Dns.GetHostEntry(Dns.GetHostName());
             _address = IPAddress.Parse("0.0.0.0");
             _endPoint = new IPEndPoint(_address, port);
             _socket = new Socket(_address.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
@@ -35,15 +35,17 @@ namespace PingPongServer
                 var newSocket = _socket.Accept();
                 string userData = null;
 
-                while (true)
+                int bytesRec = newSocket.Receive(_buffer);
+                int recv = 0;
+                foreach (var b in _buffer)
                 {
-                    int bytesRec = newSocket.Receive(_buffer);
-                    userData += Encoding.ASCII.GetString(_buffer, 0, bytesRec);
-                    if (userData.IndexOf("<EOF>") > -1)
+                    if (b != 0)
                     {
-                        break;
+                        recv++;
                     }
                 }
+                userData += Encoding.ASCII.GetString(_buffer, 0, bytesRec);
+
 
                 Console.WriteLine(userData);
             }

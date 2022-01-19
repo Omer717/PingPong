@@ -37,7 +37,7 @@ namespace PingPongClient
 
         public void SendMessage(string message)
         {
-            var messageBytes = Encoding.ASCII.GetBytes($"{message}<EOF>");
+            var messageBytes = Encoding.ASCII.GetBytes(message);
             _socket.Send(messageBytes);
         }
 
