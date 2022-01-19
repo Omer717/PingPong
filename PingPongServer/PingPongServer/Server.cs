@@ -29,10 +29,10 @@ namespace PingPongServer
         {
             _socket.Bind(_endPoint);
             _socket.Listen(5);
-
+            var newSocket = _socket.Accept();
             while (true)
             {
-                var newSocket = _socket.Accept();
+                
                 string userData = null;
 
                 int bytesRec = newSocket.Receive(_buffer);
