@@ -25,7 +25,7 @@ namespace PingPongClient
 
             _address = IPAddress.Parse(ip);
             _endpoint = new IPEndPoint(_address, port);
-  
+
             _socket = new Socket(_address.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
         }
 
@@ -43,23 +43,10 @@ namespace PingPongClient
 
         public void Start()
         {
-            try
-            {
-                _socket.Connect(_endpoint);
-                Console.WriteLine("Connected...");
-                
-                while (true)
-                {
-                    SendMessage(Console.ReadLine());
-                    var a = RecieveMessage();
-                    Console.WriteLine(a);
-                }
 
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.ToString());
-            }
+            _socket.Connect(_endpoint);
+            Console.WriteLine("Connected...");
+
         }
     }
 }
