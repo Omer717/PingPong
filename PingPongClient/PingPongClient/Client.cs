@@ -30,7 +30,9 @@ namespace PingPongClient
                     recv++;
                 }
             }
-            var data = buffer.Take(recv).ToArray();
+
+            //-1 to remove \n from the input
+            var data = buffer.Take(recv-1).ToArray();
             return data;
         }
 
