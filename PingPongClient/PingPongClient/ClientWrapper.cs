@@ -18,8 +18,6 @@ namespace PingPongClient
 
         public void RunPingPongClient()
         {
-            _client.Start();
-
             while (true)
             {
                 var userInput = _input.GetInput();

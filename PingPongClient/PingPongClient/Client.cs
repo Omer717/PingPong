@@ -1,6 +1,7 @@
 ﻿using PingPongClient.Abstractions;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -13,40 +14,27 @@ namespace PingPongClient
     {
         private const int BUFFER_SIZE = 1024;
 
-        private readonly IPAddress _address;
-        private readonly IPEndPoint _endpoint;
-        private readonly Socket _socket;
-
-        private byte[] _buffer;
+        private readonly TcpClient _client;
+        private readonly NetworkStream _stream;
 
         public Client(string ip, int port)
         {
-            _buffer = new byte[BUFFER_SIZE];
-
-            _address = IPAddress.Parse(ip);
-            _endpoint = new IPEndPoint(_address, port);
-
-            _socket = new Socket(_address.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+            _client = new TcpClient(ip, port);
+            _stream = _client.GetStream();
         }
 
         public string RecieveMessage()
         {
-            int bytesRec = _socket.Receive(_buffer);
-            return Encoding.ASCII.GetString(_buffer, 0, bytesRec);
+            var reader = new StreamReader(_stream);
+            return reader.ReadLine();
         }
 
         public void SendMessage(string message)
         {
-            var messageBytes = Encoding.ASCII.GetBytes(message);
-            _socket.Send(messageBytes);
-        }
-
-        public void Start()
-        {
-
-            _socket.Connect(_endpoint);
-            Console.WriteLine("Connected...");
-
+            int byteCount = Encoding.ASCII.GetByteCount(message);
+            byte[] buffer = new byte[byteCount];
+            buffer = Encoding.ASCII.GetBytes(message);
+            _stream.Write(buffer, 0, byteCount);
         }
     }
 }

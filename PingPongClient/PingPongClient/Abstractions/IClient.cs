@@ -2,7 +2,6 @@
 {
     public interface IClient
     {
-        void Start();
         void SendMessage(string message);
         string RecieveMessage();
     }
