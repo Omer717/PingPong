@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -12,26 +13,18 @@ namespace PingPongServer
     {
         private const int BUFFER_SIZE = 1024;
 
-        private readonly IPAddress _address;
-        private readonly IPEndPoint _endPoint;
-        private readonly Socket _listenSocket;
-
-        private List<Socket> _connectedSockets;
+        private readonly TcpListener _listener;
+        private List<TcpClient> _connectedSockets;
 
         private byte[] _buffer;
 
         public Server(int port)
         {
-            _buffer = new byte[BUFFER_SIZE];
-
-            _address = IPAddress.Parse("0.0.0.0");
-            _endPoint = new IPEndPoint(_address, port);
-            _listenSocket = new Socket(_address.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-
-            _connectedSockets = new List<Socket>();
+            _listener = new TcpListener(IPAddress.Any, port);
+            _connectedSockets = new List<TcpClient>();  
         }
 
-        public void CreateSocketThread(Socket socket)
+        public void CreateClientThread(TcpClient client)
         {
             var socketThread = new Thread(() =>
             {
@@ -40,45 +33,48 @@ namespace PingPongServer
                 {
                     try
                     {
-                        var recivedData = RecvMessage(socket);
-                        SendMessage(socket, recivedData);
+                        var recivedData = RecvMessage(client);
+                        SendMessage(client, recivedData);
                     }
                     catch (Exception)
                     {
-                        Console.WriteLine("Lost Connection to socket");
+                        Console.WriteLine("Lost Connection to client");
                         terminated = true;
-                        _connectedSockets.Remove(socket);
+                        _connectedSockets.Remove(client);
                     }
                 }
             });
             socketThread.Start();
         }
 
-        public string RecvMessage(Socket socket)
+        public string RecvMessage(TcpClient client)
         {
-            int bytesRec = socket.Receive(_buffer);
+            var stream = client.GetStream();
+            byte[] buffer = new byte[BUFFER_SIZE];
+            stream.Read(buffer, 0, buffer.Length);
             int recv = 0;
-            foreach (var b in _buffer)
+            foreach (var b in buffer)
             {
                 if (b != 0)
                 {
                     recv++;
                 }
             }
-            var userData = Encoding.ASCII.GetString(_buffer, 0, bytesRec);
-            return userData;
+            var data = Encoding.UTF8.GetString(buffer, 0, recv);
+            return data;
         }
 
-        public void SendMessage(Socket socket, string message)
+        public void SendMessage(TcpClient client, string message)
         {
-            var messageBytes = Encoding.UTF8.GetBytes(message);
-            socket.Send(messageBytes);
+            var stream = client.GetStream();
+            var writer = new StreamWriter(stream);
+            writer.WriteLine(message);
+            writer.Flush();
         }
 
         public void Start()
         {
-            _listenSocket.Bind(_endPoint);
-            _listenSocket.Listen(5);
+            _listener.Start();
             WaitForNewClients();
         }
 
@@ -86,9 +82,9 @@ namespace PingPongServer
         {
             while (true)
             {
-                var newSocket = _listenSocket.Accept();
-                _connectedSockets.Add(newSocket);
-                CreateSocketThread(newSocket);
+                var newClient = _listener.AcceptTcpClient();
+                _connectedSockets.Add(newClient);
+                CreateClientThread(newClient);
             }
         }
     }
