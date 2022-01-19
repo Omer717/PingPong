@@ -1,13 +1,11 @@
-﻿using System;
+﻿using PingPongServer.Abstractions;
+using PingPongServer.Converter.Abstractions;
+using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading;
-using PingPongServer.Abstractions;
-using PingPongServer.Converter.Abstractions;
 
 namespace PingPongServer
 {
@@ -62,7 +60,7 @@ namespace PingPongServer
                     recv++;
                 }
             }
-            //-1 to remove \n
+
             Console.WriteLine(_converter.ByteToString(buffer.Take(recv).ToArray()));
             return buffer.Take(recv).ToArray();
         }
