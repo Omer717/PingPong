@@ -10,15 +10,15 @@ namespace PingPongServer
 {
     public class Server : IServer
     {
-        private const int BUFFER_SIZE = 1024;
-
+        private readonly IServerAction _serverAction;
         private readonly TcpListener _listener;
         private List<TcpClient> _connectedSockets;
 
-        public Server(int port)
+        public Server(IServerAction serverAction, int port)
         {
             _listener = new TcpListener(IPAddress.Any, port);
             _connectedSockets = new List<TcpClient>();
+            _serverAction = serverAction;
         }
 
         public void CreateClientThread(TcpClient client)
@@ -30,8 +30,7 @@ namespace PingPongServer
                 {
                     try
                     {
-                        var recivedData = RecvData(client);
-                        SendData(client, recivedData);
+                        _serverAction.Execute(client);
                     }
                     catch (Exception)
                     {
@@ -42,29 +41,6 @@ namespace PingPongServer
                 }
             });
             socketThread.Start();
-        }
-
-        public byte[] RecvData(TcpClient client)
-        {
-            var stream = client.GetStream();
-            byte[] buffer = new byte[BUFFER_SIZE];
-            stream.Read(buffer, 0, buffer.Length);
-            int recv = 0;
-            for (int i = buffer.Length - 1; i > 0; i--)
-            {
-                if (buffer[i] != 0)
-                {
-                    recv = ++i;
-                    break;
-                }
-            }
-            return buffer.Take(recv).ToArray();
-        }
-
-        public void SendData(TcpClient client, byte[] data)
-        {
-            var stream = client.GetStream();
-            stream.Write(data, 0, Buffer.ByteLength(data));
         }
 
         public void Start()
