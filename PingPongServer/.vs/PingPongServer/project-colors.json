@@ -10,7 +10,12 @@
       "ProjectGuid": "ff59ee7d-8331-4c54-845e-69d7a10c82e2",
       "DisplayName": "PingPongServer.Converter",
       "ColorIndex": 1
+    },
+    "b985ef2f-17db-41de-8a4f-7daa27249571": {
+      "ProjectGuid": "b985ef2f-17db-41de-8a4f-7daa27249571",
+      "DisplayName": "PingPongServer.Common",
+      "ColorIndex": 2
     }
   },
-  "NextColorIndex": 2
+  "NextColorIndex": 3
 }

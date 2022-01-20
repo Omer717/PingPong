@@ -1,6 +1,7 @@
 ﻿using PingPongClient.Abstractions;
 using PingPongClient.Converter.Abstractions;
 using PingPongClient.UI.Abstractions;
+using PingPongServer;
 using System.Text;
 
 namespace PingPongClient

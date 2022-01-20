@@ -14,16 +14,12 @@ namespace PingPongServer
         private const int BUFFER_SIZE = 1024;
 
         private readonly TcpListener _listener;
-        private readonly IConvert _converter;
-        private readonly Person _person;
         private List<TcpClient> _connectedSockets;
 
-        public Server(IConvert converter, int port, Person person)
+        public Server(int port, Person person)
         {
             _listener = new TcpListener(IPAddress.Any, port);
             _connectedSockets = new List<TcpClient>();
-            _converter = converter;
-            _person = person;
         }
 
         public void CreateClientThread(TcpClient client)
@@ -36,9 +32,7 @@ namespace PingPongServer
                     try
                     {
                         var recivedData = RecvData(client);
-                        var toSendBytes = _converter.ToBytes(_person);
-                        Console.WriteLine(toSendBytes.Length);
-                        SendData(client, toSendBytes);
+                        SendData(client, recivedData);
                     }
                     catch (Exception)
                     {
