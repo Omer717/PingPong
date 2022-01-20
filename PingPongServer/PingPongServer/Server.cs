@@ -1,5 +1,4 @@
 ﻿using PingPongServer.Abstractions;
-using PingPongServer.Converter.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +15,7 @@ namespace PingPongServer
         private readonly TcpListener _listener;
         private List<TcpClient> _connectedSockets;
 
-        public Server(int port, Person person)
+        public Server(int port)
         {
             _listener = new TcpListener(IPAddress.Any, port);
             _connectedSockets = new List<TcpClient>();
@@ -32,6 +31,7 @@ namespace PingPongServer
                     try
                     {
                         var recivedData = RecvData(client);
+                        Console.WriteLine(string.Join(" ", recivedData));
                         SendData(client, recivedData);
                     }
                     catch (Exception)

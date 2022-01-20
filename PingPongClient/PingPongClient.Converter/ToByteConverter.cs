@@ -1,5 +1,7 @@
 ﻿using PingPongClient.Converter.Abstractions;
 using System;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 
 namespace PingPongClient.Converter
@@ -11,9 +13,17 @@ namespace PingPongClient.Converter
             return Encoding.ASCII.GetBytes(value);
         }
 
-        public byte[] Convert(object value)
+        public byte[] Convert(object obj)
         {
-            throw new NotImplementedException();
+            if (obj == null)
+                return null;
+
+            BinaryFormatter bf = new BinaryFormatter();
+            MemoryStream ms = new MemoryStream();
+
+            bf.Serialize(ms, obj);
+
+            return ms.ToArray();
         }
     }
 }

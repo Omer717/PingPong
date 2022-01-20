@@ -1,16 +1,11 @@
-﻿using PingPongServer.Converter;
-
-
-namespace PingPongServer
+﻿namespace PingPongServer
 {
     internal class Program
     {
         static void Main(string[] args)
-        {
-            var converter = new ObjectConverter();
-            var person = new Person("Omer", 18);
-            //var server = new Server(converter, int.Parse(args[0]));
-            var server = new Server(converter, 1337, person);
+        { 
+            //var server = new Server(int.Parse(args[0]));
+            var server = new Server(1337);
             server.Start();
         }
     }

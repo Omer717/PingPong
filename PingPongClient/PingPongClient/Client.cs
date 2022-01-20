@@ -7,7 +7,7 @@ namespace PingPongClient
 {
     public class Client : IClient
     {
-        private const int BUFFER_SIZE = 2048;
+        private const int BUFFER_SIZE = 1024;
 
         private readonly TcpClient _client;
         private readonly NetworkStream _stream;
