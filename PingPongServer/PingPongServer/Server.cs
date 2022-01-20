@@ -1,4 +1,5 @@
-﻿using PingPongServer.Abstractions;
+﻿using log4net;
+using PingPongServer.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -9,6 +10,8 @@ namespace PingPongServer
 {
     public class Server : IServer
     {
+        private ILog _logger = LogManager.GetLogger(typeof(Server));
+
         private readonly IServerAction _serverAction;
         private readonly TcpListener _listener;
         private List<TcpClient> _connectedSockets;
@@ -16,6 +19,8 @@ namespace PingPongServer
         public Server(IServerAction serverAction, int port)
         {
             _listener = new TcpListener(IPAddress.Any, port);
+            _logger.Info($"Server started on port {port}");
+
             _connectedSockets = new List<TcpClient>();
             _serverAction = serverAction;
         }
@@ -30,10 +35,11 @@ namespace PingPongServer
                     try
                     {
                         _serverAction.Execute(client);
+                        _logger.Info($"Performed client action {(IPEndPoint)client.Client.RemoteEndPoint}");
                     }
                     catch (Exception)
                     {
-                        Console.WriteLine("Lost Connection to client");
+                        _logger.Error($"Lost connection to client {(IPEndPoint)client.Client.RemoteEndPoint}");
                         terminated = true;
                         _connectedSockets.Remove(client);
                     }
@@ -45,6 +51,7 @@ namespace PingPongServer
         public void Start()
         {
             _listener.Start();
+            _logger.Info("Starting listener...");
             WaitForNewClients();
         }
 
@@ -53,6 +60,7 @@ namespace PingPongServer
             while (true)
             {
                 var newClient = _listener.AcceptTcpClient();
+                _logger.Info($"Got a new client {(IPEndPoint)newClient.Client.RemoteEndPoint}");
                 _connectedSockets.Add(newClient);
                 CreateClientThread(newClient);
             }
