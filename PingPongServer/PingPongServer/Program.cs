@@ -10,8 +10,7 @@ namespace PingPongServer
             XmlConfigurator.Configure(new System.IO.FileInfo("log4net.config"));
 
             var serverAction = new RetrunInputToClient(new DataSender(), new DataReciver());
-            //var server = new Server(int.Parse(args[0]));
-            var server = new Server(serverAction, 1337);
+            var server = new Server(int.Parse(args[0]));
             server.Start();
         }
     }
