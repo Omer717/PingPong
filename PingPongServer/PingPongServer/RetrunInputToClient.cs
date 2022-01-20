@@ -15,7 +15,7 @@ namespace PingPongServer
         }
         public void Execute(TcpClient client)
         {
-            var data  = _reciver.ReciveData(client);
+            var data = _reciver.ReciveData(client);
             _sender.SendData(client, data);
         }
     }
