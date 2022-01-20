@@ -1,5 +1,5 @@
-﻿using PingPongClient.UI;
-using PingPongClient.Converter;
+﻿using PingPongClient.Converter;
+using PingPongClient.UI;
 
 namespace PingPongClient
 {
@@ -13,8 +13,9 @@ namespace PingPongClient
             var output = new ConsoleOutput();
             var converter = new ToByteConverter();
             var fromConverter = new FromByteConverter();
+            var personProvider = new PersonObjectProvider(input, output);
 
-            var client = new ClientWrapper(clientLogic, input, output, converter, fromConverter);
+            var client = new ClientWrapper(clientLogic, input, output, converter, fromConverter, personProvider);
             client.RunPingPongClient();
         }
     }

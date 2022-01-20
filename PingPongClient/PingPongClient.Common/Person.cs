@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PingPongServer
+namespace PingPongClient.Common
 {
     [Serializable]
     public class Person

@@ -1,5 +1,4 @@
 ﻿using PingPongClient.Abstractions;
-using System.IO;
 using System.Linq;
 using System.Net.Sockets;
 
@@ -23,16 +22,15 @@ namespace PingPongClient
             byte[] buffer = new byte[BUFFER_SIZE];
             _stream.Read(buffer, 0, buffer.Length);
             int recv = 0;
-            foreach (var b in buffer)
+            for (int i = buffer.Length - 1; i > 0; i--)
             {
-                if (b != 0)
+                if (buffer[i] != 0)
                 {
-                    recv++;
+                    recv = ++i;
+                    break;
                 }
             }
-
-            var data = buffer.Take(recv).ToArray();
-            return data;
+            return buffer.Take(recv).ToArray();
         }
 
         public void SendBytes(byte[] data, int byteCount)

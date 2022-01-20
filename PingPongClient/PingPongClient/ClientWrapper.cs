@@ -1,7 +1,7 @@
 ﻿using PingPongClient.Abstractions;
+using PingPongClient.Common;
 using PingPongClient.Converter.Abstractions;
 using PingPongClient.UI.Abstractions;
-using PingPongServer;
 using System.Text;
 
 namespace PingPongClient
@@ -13,31 +13,30 @@ namespace PingPongClient
         private readonly IOutput _output;
         private readonly IByteConverter _converter;
         private readonly IFromByteConverter _fromConverter;
+        private readonly IObjectProvider _objectProvider;
 
         public Person myPerson { get; set; }
 
-        public ClientWrapper(IClient client, IInput input, IOutput output, IByteConverter converter, IFromByteConverter fromConverter)
+        public ClientWrapper(IClient client, IInput input, IOutput output, IByteConverter converter, IFromByteConverter fromConverter, IObjectProvider objectProvider)
         {
             _client = client;
             _input = input;
             _output = output;
             _converter = converter;
             _fromConverter = fromConverter;
-            myPerson = new Person("Omer", 18);
+            _objectProvider = objectProvider;
         }
 
         public void RunPingPongClient()
         {
             while (true)
             {
-                //var userInput = _input.GetInput();
-                //var byteCount = Encoding.ASCII.GetByteCount(userInput);
-                var bytes = _converter.Convert(myPerson);
-                System.Console.WriteLine(string.Join(" ", bytes));
+                var userInput = _objectProvider.Provide();
+                var bytes = _converter.Convert(userInput);
                 _client.SendBytes(bytes, bytes.Length);
                 var receivedData = _client.RecieveBytes();
-                var parsedData = (Person)_fromConverter.ObjectFromBytes(receivedData);
-                _output.Write(parsedData.ToString());
+                var parsedData = _fromConverter.ObjectFromBytes(receivedData);
+                _output.WriteLine(parsedData.ToString());
             }
         }
     }
