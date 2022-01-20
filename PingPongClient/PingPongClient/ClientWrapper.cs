@@ -31,8 +31,8 @@ namespace PingPongClient
                 var bytes = _converter.Convert(userInput);
                 _client.SendBytes(bytes, byteCount);
                 var receivedData = _client.RecieveBytes();
-                var parsedData = _fromConverter.StringFromBytes(receivedData);
-                _output.Write(parsedData);
+                var parsedData = (Person)_fromConverter.ObjectFromBytes(receivedData);
+                _output.Write(parsedData.ToString());
             }
         }
     }

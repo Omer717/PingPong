@@ -15,13 +15,15 @@ namespace PingPongServer
 
         private readonly TcpListener _listener;
         private readonly IConvert _converter;
+        private readonly Person _person;
         private List<TcpClient> _connectedSockets;
 
-        public Server(IConvert converter, int port)
+        public Server(IConvert converter, int port, Person person)
         {
             _listener = new TcpListener(IPAddress.Any, port);
             _connectedSockets = new List<TcpClient>();
             _converter = converter;
+            _person = person;
         }
 
         public void CreateClientThread(TcpClient client)
@@ -34,7 +36,9 @@ namespace PingPongServer
                     try
                     {
                         var recivedData = RecvData(client);
-                        SendData(client, recivedData);
+                        var toSendBytes = _converter.ToBytes(_person);
+                        Console.WriteLine(toSendBytes.Length);
+                        SendData(client, toSendBytes);
                     }
                     catch (Exception)
                     {
@@ -61,7 +65,6 @@ namespace PingPongServer
                 }
             }
 
-            Console.WriteLine(_converter.ByteToString(buffer.Take(recv).ToArray()));
             return buffer.Take(recv).ToArray();
         }
 
